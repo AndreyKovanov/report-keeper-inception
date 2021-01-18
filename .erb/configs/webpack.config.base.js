@@ -6,6 +6,10 @@ import path from 'path';
 import webpack from 'webpack';
 import { dependencies as externals } from '../../src/package.json';
 
+function srcPaths(src) {
+  return path.join(__dirname, src);
+}
+
 export default {
   externals: [...Object.keys(externals || {})],
 
@@ -34,6 +38,11 @@ export default {
    * Determine the array of extensions that should be used to resolve modules.
    */
   resolve: {
+    alias: {
+      '@stores': srcPaths('../../src/stores'),
+      '@helpers': srcPaths('../../src/helpers'),
+      '@components': srcPaths('../../src/components'),
+    },
     extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
     modules: [path.join(__dirname, '../src'), 'node_modules'],
   },
