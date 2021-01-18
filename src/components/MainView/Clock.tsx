@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 
 import { useStore } from '@helpers/store';
-import { CounterContext } from '@stores/Counter.provider';
+import { TimerContext } from '@stores/Timer/Timer.provider';
 
 const useStyles = makeStyles({
   root: {
@@ -14,9 +14,11 @@ const useStyles = makeStyles({
 });
 
 export const Clock: React.FC = observer(() => {
-  const { countValue } = useStore(CounterContext);
+  const { workedHours, workedMinutes } = useStore(TimerContext);
 
   const classes = useStyles();
 
-  return <Box className={classes.root}>Clock will be here</Box>;
+  return (
+    <Box className={classes.root}>{`${workedHours}:${workedMinutes}`}</Box>
+  );
 });

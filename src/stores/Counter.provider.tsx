@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode } from 'react';
-import { useLocalStore } from 'mobx-react-lite';
+import { useLocalObservable } from 'mobx-react-lite';
 
 import { CounterStore } from './Counter.store';
 
@@ -10,7 +10,7 @@ interface ProviderProps {
 export const CounterContext = createContext<CounterStore | null>(null);
 
 export const CounterProvider = ({ children }: ProviderProps) => {
-  const store = useLocalStore(() => new CounterStore());
+  const store = useLocalObservable(() => new CounterStore());
 
   return (
     <CounterContext.Provider value={store}>{children}</CounterContext.Provider>

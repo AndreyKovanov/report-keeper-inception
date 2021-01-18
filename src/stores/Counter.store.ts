@@ -1,23 +1,28 @@
-import { observable, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 
 export class CounterStore {
-  @observable
+  constructor() {
+    makeObservable(this, {
+      countValue: observable,
+      increment: action,
+      decrement: action,
+      inputTitle: observable,
+      changeTitle: action,
+    });
+  }
+
   public countValue = 0;
 
-  @action
   public increment = (): void => {
     this.countValue += 1;
   };
 
-  @action
   public decrement = (): void => {
     this.countValue -= 1;
   };
 
-  @observable
   public inputTitle = '';
 
-  @action
   public changeTitle = (newValue: string): void => {
     this.inputTitle = newValue;
   };
