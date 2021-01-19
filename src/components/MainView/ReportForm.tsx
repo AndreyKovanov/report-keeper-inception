@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
+import SaveIcon from '@material-ui/icons/Save';
 
 import { useStore } from '@helpers/store';
 import { CounterContext } from '@stores/Counter.provider';
@@ -61,7 +62,9 @@ export const ReportForm: React.FC = observer(() => {
         value={inputTitle}
         onChange={(event) => changeTitle(event.target.value)}
       />
-      <Button color="primary">Save</Button>
+      <Button variant="outlined" color="primary">
+        Save <SaveIcon fontSize="large" />
+      </Button>
     </>
   );
 });
