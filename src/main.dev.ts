@@ -72,6 +72,11 @@ const createWindow = async () => {
     width: 1024,
     height: 728,
     icon: getAssetPath('icon.png'),
+    frame: false,
+    resizable: false,
+    skipTaskbar: true,
+    // alwaysOnTop: settings.getSettings().topMost,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
     },
