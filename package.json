@@ -94,21 +94,15 @@
     "type": "git",
     "url": "git+https://github.com/AndreyKovanov/report-keeper-inception.git"
   },
-  "author": "Anton Stepanov, Andrey Kovanov, Ovsov Nikita, Michail Lipin",
+  "author": "Anton Stepanov, Andrey Kovanov, Nikita Ovsov, Michail Lipin",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AndreyKovanov/report-keeper-inception/issues"
   },
   "keywords": [
-    "electron",
-    "boilerplate",
-    "react",
-    "typescript",
-    "ts",
-    "sass",
-    "webpack",
-    "hot",
-    "reload"
+    "time",
+    "report",
+    "tracking"
   ],
   "homepage": "https://github.com/AndreyKovanov/report-keeper-inception",
   "jest": {
