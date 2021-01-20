@@ -10,11 +10,12 @@
  */
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import path from 'path';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
-import MenuBuilder from './menu';
+// import MenuBuilder from './menu';
+import TrayBuilder from './tray';
+import { getAssetPath } from './utils';
 
 export default class AppUpdater {
   constructor() {
@@ -25,6 +26,7 @@ export default class AppUpdater {
 }
 
 let mainWindow: BrowserWindow | null = null;
+let tray: Tray | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -58,14 +60,6 @@ const createWindow = async () => {
   ) {
     await installExtensions();
   }
-
-  const RESOURCES_PATH = app.isPackaged
-    ? path.join(process.resourcesPath, 'resources')
-    : path.join(__dirname, '../resources');
-
-  const getAssetPath = (...paths: string[]): string => {
-    return path.join(RESOURCES_PATH, ...paths);
-  };
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -102,14 +96,17 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const menuBuilder = new MenuBuilder(mainWindow);
-  menuBuilder.buildMenu();
+  // const menuBuilder = new MenuBuilder(mainWindow);
+  // menuBuilder.buildMenu();
 
   // Open urls in the user's browser
   mainWindow.webContents.on('new-window', (event, url) => {
     event.preventDefault();
     shell.openExternal(url);
   });
+
+  const trayBuilder = new TrayBuilder(mainWindow);
+  tray = trayBuilder.buildTray(getAssetPath('icons/16x16.png'));
 
   // Remove this if your app does not use auto updates
   // eslint-disable-next-line
@@ -136,6 +133,17 @@ app.on('activate', () => {
   if (mainWindow === null) createWindow();
 });
 
-ipcMain.handle('app:hide', (e, args) => {
-  app.hide();
+/**
+ * IPC listeners...
+ */
+
+ipcMain.handle('win:hide', () => {
+  mainWindow?.hide();
+});
+
+// HACK: This event will never happen.
+// It keeps reference to Tray to avoid destroying by Garbage collector.
+// https://www.electronjs.org/docs/faq#my-apps-tray-disappeared-after-a-few-minutes
+ipcMain.handle('app:not-happen', () => {
+  console.table(tray);
 });

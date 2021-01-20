@@ -128,6 +128,6 @@ export class TimerStore {
   };
 
   public minimizeWindow = () => {
-    ipcRenderer.invoke('app:hide', {});
+    ipcRenderer.invoke('win:hide');
   };
 }
