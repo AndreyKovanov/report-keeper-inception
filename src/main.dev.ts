@@ -16,6 +16,7 @@ import log from 'electron-log';
 // import MenuBuilder from './menu';
 import TrayBuilder from './tray';
 import { getAssetPath } from './utils';
+import { SettingsManager } from './managers/Settings';
 
 export default class AppUpdater {
   constructor() {
@@ -69,8 +70,7 @@ const createWindow = async () => {
     frame: false,
     resizable: false,
     skipTaskbar: true,
-    // alwaysOnTop: settings.getSettings().topMost,
-    alwaysOnTop: true,
+    alwaysOnTop: SettingsManager.get('topMost'),
     webPreferences: {
       nodeIntegration: true,
     },
