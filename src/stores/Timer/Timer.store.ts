@@ -1,5 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { observable, action, computed, makeObservable } from 'mobx';
+import { dateToString } from '@helpers/date';
 
 const oneHour = 60;
 const oneMinute = 60000;
@@ -7,7 +8,7 @@ const oneMinute = 60000;
 export class TimerStore {
   constructor() {
     makeObservable(this, {
-      updateTime: action,
+      updateWorkedTime: action,
       workedTimeInMinutes: observable,
       workedMinutes: computed,
       workedHours: computed,
@@ -34,13 +35,11 @@ export class TimerStore {
   public isPaused = false;
 
   private notifyUser = () => {
-    // ipcRenderer.send('mainWindow:show', {});
-    // this.reportField.focus();
-
-    this.updateTime();
+    ipcRenderer.send('win:show');
+    this.updateWorkedTime();
   };
 
-  public updateTime = () => {
+  public updateWorkedTime = () => {
     const elapsedTime = new Date().getTime() - this.startTime.getTime();
     this.workedTimeInMinutes = Math.round(elapsedTime / oneMinute);
   };
@@ -88,46 +87,57 @@ export class TimerStore {
       const pauseDuration = currentTime.getTime() - this.pauseBegin.getTime();
       const newStartTime = this.startTime.getTime() + pauseDuration;
 
-      // this.settings.timeStamp = new Date(newStartTime);
-      // ipcRenderer.send('settings:save', [this.settings, true]);
+      ipcRenderer.send('persistentTime:setValue', 'startTime', newStartTime);
     }
 
     this.pauseBegin = null;
     this.startNewDay();
   };
 
-  public startNewDay = () => {
-    // const timestamp = new Date(this.settings.timeStamp);
-    const timestamp = new Date();
-    const timestampDate = `${timestamp.getDay()}${timestamp.getMonth()}${timestamp.getFullYear()}`;
-    const nowTime = new Date();
-    const nowDate = `${nowTime.getDay()}${nowTime.getMonth()}${nowTime.getFullYear()}`;
+  public startNewDay = async () => {
+    const persistentTimestamp = await ipcRenderer.invoke(
+      'persistentTime:getValue',
+      'startTime'
+    );
 
-    if (timestampDate !== nowDate) {
-      // this.settings.timeStamp = nowTime;
-      // ipcRenderer.send('settings:save', [this.settings, true]);
+    const persistentDate = new Date(persistentTimestamp);
+    const persistentDateString = dateToString(persistentDate);
+    const nowDate = new Date();
+    const nowDateString = dateToString(nowDate);
+
+    if (persistentDateString !== nowDateString) {
+      ipcRenderer.send(
+        'persistentTime:setValue',
+        'startTime',
+        nowDate.getTime()
+      );
     }
 
-    // this.startTime = new Date(this.settings.timeStamp);
-    this.startTime = new Date();
-    this.updateTime();
+    this.startTime =
+      persistentDateString === nowDateString ? persistentDate : nowDate;
+
+    this.updateWorkedTime();
 
     if (this.minuteTimer) {
       clearInterval(this.minuteTimer);
     }
 
+    this.minuteTimer = setInterval(this.updateWorkedTime, oneMinute);
+
     if (this.notificationTimer) {
       clearInterval(this.notificationTimer);
     }
 
-    this.minuteTimer = setInterval(this.updateTime, oneMinute);
-    // const notificationInterval =
-    //   this.settings.notificationTime * oneHour * oneMinute;
-    const notificationInterval = 1 * oneHour * oneMinute;
+    const notificationTime = await ipcRenderer.invoke(
+      'appSettings:getValue',
+      'notificationTime'
+    );
+    const notificationInterval = notificationTime * oneHour * oneMinute;
+
     this.notificationTimer = setInterval(this.notifyUser, notificationInterval);
   };
 
   public minimizeWindow = () => {
-    ipcRenderer.invoke('win:hide');
+    ipcRenderer.send('win:hide');
   };
 }

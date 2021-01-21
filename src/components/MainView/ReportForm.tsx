@@ -61,6 +61,7 @@ export const ReportForm: React.FC = observer(() => {
         variant="outlined"
         value={inputTitle}
         onChange={(event) => changeTitle(event.target.value)}
+        autoFocus
       />
       <Button variant="outlined" color="primary">
         Save <SaveIcon fontSize="large" />

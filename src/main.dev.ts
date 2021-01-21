@@ -17,6 +17,7 @@ import log from 'electron-log';
 import TrayBuilder from './tray';
 import { getAssetPath } from './utils';
 import { SettingsManager } from './managers/Settings';
+import { PersistentTimeManager } from './managers/PersistentTime';
 
 export default class AppUpdater {
   constructor() {
@@ -54,6 +55,11 @@ const installExtensions = async () => {
     .catch(console.log);
 };
 
+const initializeManagers = () => {
+  PersistentTimeManager.has('init');
+  SettingsManager.has('init');
+};
+
 const createWindow = async () => {
   if (
     process.env.NODE_ENV === 'development' ||
@@ -61,6 +67,8 @@ const createWindow = async () => {
   ) {
     await installExtensions();
   }
+
+  initializeManagers();
 
   mainWindow = new BrowserWindow({
     show: false,
@@ -137,13 +145,17 @@ app.on('activate', () => {
  * IPC listeners...
  */
 
-ipcMain.handle('win:hide', () => {
+ipcMain.on('win:hide', () => {
   mainWindow?.hide();
+});
+
+ipcMain.on('win:show', () => {
+  mainWindow?.show();
 });
 
 // HACK: This event will never happen.
 // It keeps reference to Tray to avoid destroying by Garbage collector.
 // https://www.electronjs.org/docs/faq#my-apps-tray-disappeared-after-a-few-minutes
-ipcMain.handle('app:not-happen', () => {
+ipcMain.on('app:not-happen', () => {
   console.table(tray);
 });

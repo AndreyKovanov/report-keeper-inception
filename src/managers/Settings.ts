@@ -47,10 +47,10 @@ export const SettingsManager = new ElectronStore({
   defaults: getDefaultSettings(),
 });
 
-ipcMain.handle('getSettingsValue', (event, key) => {
+ipcMain.handle('appSettings:getValue', (event, key) => {
   return SettingsManager.get(key);
 });
 
-ipcMain.handle('setSettingsValue', (event, key, value) => {
-  return SettingsManager.set(key, value);
+ipcMain.on('appSettings:setValue', (event, key, value) => {
+  SettingsManager.set(key, value);
 });
