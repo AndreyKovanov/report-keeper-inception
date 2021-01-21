@@ -37,7 +37,7 @@ const getDefaultSettings = () => ({
   filePath: app.getPath('userData'),
   notificationTime: 1,
   newFileEveryWeek: false,
-  workTime: 8,
+  dayNorm: 8,
   theme: 'dark',
   autoLaunch: true,
 });

@@ -4,6 +4,7 @@ import { CssBaseline, createMuiTheme } from '@material-ui/core';
 
 import { CounterProvider } from '@stores/Counter.provider';
 import { TimerProvider } from '@stores/Timer/Timer.provider';
+import { StatisticsProvider } from '@stores/Statistics/Statistics.provider';
 import { AppContent } from './Routes';
 
 const theme = createMuiTheme({
@@ -17,7 +18,9 @@ const App: React.FC = () => (
     <CssBaseline />
     <CounterProvider>
       <TimerProvider>
-        <AppContent />
+        <StatisticsProvider>
+          <AppContent />
+        </StatisticsProvider>
       </TimerProvider>
     </CounterProvider>
   </ThemeProvider>
