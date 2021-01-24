@@ -2,7 +2,7 @@ import { app, ipcMain } from 'electron';
 import ElectronStore from 'electron-store';
 
 const getDefaultSettings = () => ({
-  projects: [
+  projectList: [
     {
       name: 'Internal.Communication',
       enabled: true,
@@ -32,11 +32,9 @@ const getDefaultSettings = () => ({
       enabled: true,
     },
   ],
-  realTime: false,
   topMost: true,
   filePath: app.getPath('userData'),
   notificationTime: 1,
-  newFileEveryWeek: false,
   dayNorm: 8,
   theme: 'dark',
   autoLaunch: true,
@@ -51,6 +49,17 @@ ipcMain.handle('appSettings:getValue', (event, key) => {
   return SettingsManager.get(key);
 });
 
+ipcMain.handle('appSettings:getAll', () => {
+  return SettingsManager.store;
+});
+
 ipcMain.on('appSettings:setValue', (event, key, value) => {
   SettingsManager.set(key, value);
+});
+
+ipcMain.on('appSettings:setAll', (event, newSettings) => {
+  SettingsManager.store = newSettings;
+  // Restart app to apply settings
+  // app.relaunch();
+  // app.quit();
 });

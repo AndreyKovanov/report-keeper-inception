@@ -3,6 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import SettingsIcon from '@material-ui/icons/Settings';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -44,6 +45,14 @@ export const MainView: React.FC = () => {
       >
         Statistics
         <KeyboardArrowDownIcon />
+      </Button>
+      <Button
+        size="small"
+        color="primary"
+        component={RouterLink}
+        to="/settings"
+      >
+        <SettingsIcon />
       </Button>
     </Box>
   );
