@@ -9,6 +9,11 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { SettingsContext } from '@stores/Settings/Settings.provider';
 import { useStore } from '@helpers/store';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import Checkbox from '@material-ui/core/Checkbox';
+
+const themeList = ['dark', 'light'];
 
 const useStyles = makeStyles({
   root: {
@@ -23,6 +28,18 @@ export const SettingsView: React.FC = observer(() => {
     changeTopMost,
     autoLaunch,
     changeAutoLaunch,
+    notificationTime,
+    changeNotificationTime,
+    dayNorm,
+    changeDayNorm,
+    theme,
+    changeTheme,
+    filePath,
+    changeFilePath,
+    chooseReportsDirectory,
+    projectList,
+    changeProjectList,
+    chooseReportsTemplate,
   } = useStore(SettingsContext);
 
   const classes = useStyles();
@@ -52,6 +69,67 @@ export const SettingsView: React.FC = observer(() => {
             }
             label="Auto-start"
           />
+        </FormGroup>
+        <FormGroup row>
+          <TextField
+            label="Show time in hrs."
+            variant="outlined"
+            value={notificationTime}
+            onChange={changeNotificationTime}
+            type="number"
+          />
+          <TextField
+            label="Work time in hrs."
+            variant="outlined"
+            value={dayNorm}
+            onChange={changeDayNorm}
+            type="number"
+          />
+        </FormGroup>
+        <FormGroup row>
+          <TextField
+            select
+            variant="outlined"
+            label="theme"
+            value={theme}
+            onChange={changeTheme}
+          >
+            {themeList.map((item) => (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            ))}
+          </TextField>
+          <TextField
+            label="Path to report files"
+            variant="outlined"
+            value={filePath}
+            onChange={changeFilePath}
+          />
+          <Button color="primary" onClick={chooseReportsDirectory}>
+            choose path
+          </Button>
+        </FormGroup>
+        <FormGroup row>
+          <Button color="primary" onClick={chooseReportsTemplate}>
+            Choose report template file
+          </Button>
+        </FormGroup>
+        <FormGroup row>
+          {projectList.map((item) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={item.enabled}
+                  onChange={changeProjectList}
+                  name={item.name}
+                  color="primary"
+                />
+              }
+              label={item.name}
+              key={item.name}
+            />
+          ))}
         </FormGroup>
       </Box>
       <Box>

@@ -18,6 +18,7 @@ import TrayBuilder from './tray';
 import { getAssetPath } from './utils';
 import { SettingsManager } from './managers/Settings';
 import { PersistentTimeManager } from './managers/PersistentTime';
+import { AppWindowManager } from './managers/AppWindow';
 
 export default class AppUpdater {
   constructor() {
@@ -58,6 +59,7 @@ const installExtensions = async () => {
 const initializeManagers = () => {
   PersistentTimeManager.has('init');
   SettingsManager.has('init');
+  AppWindowManager.init();
 };
 
 const createWindow = async () => {

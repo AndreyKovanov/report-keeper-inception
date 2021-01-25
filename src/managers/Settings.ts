@@ -1,5 +1,6 @@
 import { app, ipcMain } from 'electron';
 import ElectronStore from 'electron-store';
+import AutoLaunch from 'auto-launch';
 
 const getDefaultSettings = () => ({
   projectList: [
@@ -57,9 +58,22 @@ ipcMain.on('appSettings:setValue', (event, key, value) => {
   SettingsManager.set(key, value);
 });
 
-ipcMain.on('appSettings:setAll', (event, newSettings) => {
+ipcMain.on('appSettings:setAll', async (event, newSettings) => {
   SettingsManager.store = newSettings;
+
+  const autoLauncher = new AutoLaunch({
+    name: 'report-keeper-inception',
+  });
+
+  const isAutoLaunchEnabled = await autoLauncher.isEnabled();
+
+  if (!isAutoLaunchEnabled && newSettings.autoLaunch) {
+    autoLauncher.enable();
+  } else if (isAutoLaunchEnabled && !newSettings.autoLaunch) {
+    autoLauncher.disable();
+  }
+
   // Restart app to apply settings
-  // app.relaunch();
-  // app.quit();
+  app.relaunch();
+  app.quit();
 });
