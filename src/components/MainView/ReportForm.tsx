@@ -8,22 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import SaveIcon from '@material-ui/icons/Save';
 
 import { useStore } from '@helpers/store';
-import { CounterContext } from '@stores/Counter.provider';
-
-const projects = [
-  {
-    label: 'Internal',
-    value: 'internal-id',
-  },
-  {
-    label: 'Real',
-    value: 'react-id',
-  },
-  {
-    label: 'Test',
-    value: 'test-id',
-  },
-];
+import { CurrentReportContext } from '@stores/CurrentReport/CurrentReport.provider';
 
 const useStyles = makeStyles({
   root: {
@@ -32,13 +17,15 @@ const useStyles = makeStyles({
 });
 
 export const ReportForm: React.FC = observer(() => {
-  const { inputTitle, changeTitle } = useStore(CounterContext);
+  const {
+    projectNames,
+    reportTask,
+    changeReportTask,
+    reportDescription,
+    changeReportDescription,
+  } = useStore(CurrentReportContext);
 
   const classes = useStyles();
-
-  const handleSelectChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-  };
 
   return (
     <>
@@ -47,20 +34,20 @@ export const ReportForm: React.FC = observer(() => {
         select
         variant="outlined"
         label="Project"
-        value={projects[0].value}
-        onChange={handleSelectChange}
+        value={reportTask}
+        onChange={changeReportTask}
       >
-        {projects.map((item) => (
-          <MenuItem key={item.value} value={item.value}>
-            {item.label}
+        {projectNames.map((item) => (
+          <MenuItem key={item} value={item}>
+            {item}
           </MenuItem>
         ))}
       </TextField>
       <TextField
         label="Description"
         variant="outlined"
-        value={inputTitle}
-        onChange={(event) => changeTitle(event.target.value)}
+        value={reportDescription}
+        onChange={changeReportDescription}
         autoFocus
       />
       <Button variant="outlined" color="primary">

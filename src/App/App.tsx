@@ -6,6 +6,7 @@ import { CounterProvider } from '@stores/Counter.provider';
 import { TimerProvider } from '@stores/Timer/Timer.provider';
 import { StatisticsProvider } from '@stores/Statistics/Statistics.provider';
 import { SettingsProvider } from '@stores/Settings/Settings.provider';
+import { CurrentReportProvider } from '@stores/CurrentReport/CurrentReport.provider';
 import { AppContent } from './Routes';
 
 const theme = createMuiTheme({
@@ -20,9 +21,11 @@ const App: React.FC = () => (
     <CounterProvider>
       <SettingsProvider>
         <TimerProvider>
-          <StatisticsProvider>
-            <AppContent />
-          </StatisticsProvider>
+          <CurrentReportProvider>
+            <StatisticsProvider>
+              <AppContent />
+            </StatisticsProvider>
+          </CurrentReportProvider>
         </TimerProvider>
       </SettingsProvider>
     </CounterProvider>

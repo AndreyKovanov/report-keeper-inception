@@ -1,12 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { observable, makeObservable, action, runInAction } from 'mobx';
-
-interface ProjectItem {
-  name: string;
-  enabled: boolean;
-}
-
-type ColorTheme = 'dark' | 'light';
+import { ColorTheme, ProjectItem } from '@stores/types';
 
 export class SettingsStore {
   constructor() {
