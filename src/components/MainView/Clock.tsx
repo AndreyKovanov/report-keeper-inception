@@ -44,18 +44,29 @@ export const Clock: React.FC = observer(() => {
           onClick={startNewDay}
           variant="outlined"
           color="primary"
+          size="small"
           disabled={isPaused}
         >
-          <ReplayIcon fontSize="large" />
+          <ReplayIcon />
         </Button>
 
         {isPaused ? (
-          <Button onClick={stopPause} variant="outlined" color="primary">
-            <PlayArrowIcon fontSize="large" />
+          <Button
+            onClick={stopPause}
+            variant="outlined"
+            color="primary"
+            size="small"
+          >
+            <PlayArrowIcon />
           </Button>
         ) : (
-          <Button onClick={startPause} variant="outlined" color="primary">
-            <PauseIcon fontSize="large" />
+          <Button
+            onClick={startPause}
+            variant="outlined"
+            color="primary"
+            size="small"
+          >
+            <PauseIcon />
           </Button>
         )}
 
@@ -63,9 +74,10 @@ export const Clock: React.FC = observer(() => {
           onClick={minimizeWindow}
           variant="outlined"
           color="primary"
+          size="small"
           disabled={isPaused}
         >
-          <ArrowDownwardIcon fontSize="large" />
+          <ArrowDownwardIcon />
         </Button>
       </Box>
       <Box className={classes.time}>{`${workedHours}:${workedMinutes}`}</Box>

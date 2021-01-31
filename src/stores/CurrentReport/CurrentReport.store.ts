@@ -7,6 +7,10 @@ export class CurrentReportStore {
     makeObservable(this, {
       reportTask: observable,
       changeReportTask: action,
+      reportDuration: observable,
+      changeReportDuration: action,
+      reportDate: observable,
+      changeReportDate: action,
       reportDescription: observable,
       changeReportDescription: action,
     });
@@ -31,10 +35,24 @@ export class CurrentReportStore {
 
   public reportTask = '';
 
+  public reportDuration = '';
+
+  public reportDate = '';
+
   public reportDescription = '';
 
   public changeReportTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.reportTask = event.target.value;
+  };
+
+  public changeReportDuration = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    this.reportDuration = event.target.value;
+  };
+
+  public changeReportDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    this.reportDate = event.target.value;
   };
 
   public changeReportDescription = (

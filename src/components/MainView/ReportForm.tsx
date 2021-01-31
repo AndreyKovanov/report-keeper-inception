@@ -21,6 +21,10 @@ export const ReportForm: React.FC = observer(() => {
     projectNames,
     reportTask,
     changeReportTask,
+    reportDuration,
+    changeReportDuration,
+    reportDate,
+    changeReportDate,
     reportDescription,
     changeReportDescription,
   } = useStore(CurrentReportContext);
@@ -33,7 +37,7 @@ export const ReportForm: React.FC = observer(() => {
         id="project-select"
         select
         variant="outlined"
-        label="Project"
+        label="Task"
         value={reportTask}
         onChange={changeReportTask}
       >
@@ -43,6 +47,18 @@ export const ReportForm: React.FC = observer(() => {
           </MenuItem>
         ))}
       </TextField>
+      <TextField
+        label="Duration"
+        variant="outlined"
+        value={reportDuration}
+        onChange={changeReportDuration}
+      />
+      <TextField
+        label="Date"
+        variant="outlined"
+        value={reportDate}
+        onChange={changeReportDate}
+      />
       <TextField
         label="Description"
         variant="outlined"

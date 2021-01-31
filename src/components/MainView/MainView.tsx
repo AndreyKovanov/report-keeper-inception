@@ -2,8 +2,8 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import SettingsIcon from '@material-ui/icons/Settings';
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -14,9 +14,6 @@ import { ReportForm } from './ReportForm';
 const useStyles = makeStyles({
   root: {
     padding: 15,
-  },
-  statistics: {
-    width: '100%',
   },
 });
 
@@ -39,12 +36,10 @@ export const MainView: React.FC = () => {
       <Button
         size="small"
         color="secondary"
-        className={classes.statistics}
         component={RouterLink}
         to="/thirdPage"
       >
-        Statistics
-        <KeyboardArrowDownIcon />
+        <EqualizerIcon />
       </Button>
       <Button
         size="small"
