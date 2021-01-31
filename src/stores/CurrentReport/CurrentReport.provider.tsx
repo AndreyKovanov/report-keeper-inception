@@ -1,6 +1,8 @@
 import React, { createContext, ReactNode } from 'react';
 import { useLocalObservable } from 'mobx-react-lite';
 
+import { useStore } from '@helpers/store';
+import { TimerContext } from '@stores/Timer/Timer.provider';
 import { CurrentReportStore } from './CurrentReport.store';
 
 interface ProviderProps {
@@ -12,7 +14,8 @@ export const CurrentReportContext = createContext<CurrentReportStore | null>(
 );
 
 export const CurrentReportProvider = ({ children }: ProviderProps) => {
-  const store = useLocalObservable(() => new CurrentReportStore());
+  const timerStore = useStore(TimerContext);
+  const store = useLocalObservable(() => new CurrentReportStore(timerStore));
 
   return (
     <CurrentReportContext.Provider value={store}>

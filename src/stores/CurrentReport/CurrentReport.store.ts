@@ -1,9 +1,10 @@
 import { ipcRenderer } from 'electron';
-import { observable, makeObservable, action } from 'mobx';
+import { observable, makeObservable, action, autorun, runInAction } from 'mobx';
 import { ProjectItem } from '@stores/types';
+import { TimerStore } from '@stores/Timer/Timer.store';
 
 export class CurrentReportStore {
-  constructor() {
+  constructor(timerStore: TimerStore) {
     makeObservable(this, {
       reportTask: observable,
       changeReportTask: action,
@@ -13,9 +14,19 @@ export class CurrentReportStore {
       changeReportDate: action,
       reportDescription: observable,
       changeReportDescription: action,
+      setReportDate: action,
+      setReportDuration: action,
     });
 
     this.initialize();
+
+    autorun(() => {
+      this.setReportDate(timerStore.currentDate);
+    });
+
+    autorun(() => {
+      this.setReportDuration(timerStore.workedHoursDecimal);
+    });
   }
 
   private async initialize() {
@@ -27,8 +38,10 @@ export class CurrentReportStore {
       .filter((project) => project.enabled)
       .map((project) => project.name);
 
-    // eslint-disable-next-line prefer-destructuring
-    this.reportTask = this.projectNames[0];
+    runInAction(() => {
+      // eslint-disable-next-line prefer-destructuring
+      this.reportTask = this.projectNames[0];
+    });
   }
 
   public projectNames: string[] = [];
@@ -51,8 +64,16 @@ export class CurrentReportStore {
     this.reportDuration = event.target.value;
   };
 
+  public setReportDuration = (newValue: string) => {
+    this.reportDuration = newValue;
+  };
+
   public changeReportDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.reportDate = event.target.value;
+  };
+
+  public setReportDate = (newValue: string) => {
+    this.reportDate = newValue;
   };
 
   public changeReportDescription = (

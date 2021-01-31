@@ -1,6 +1,6 @@
 import { ipcRenderer } from 'electron';
 import { observable, action, computed, makeObservable } from 'mobx';
-import { dateToString } from '@helpers/date';
+import { dateToString, roundNumber } from '@helpers/date';
 
 const oneHour = 60;
 const oneMinute = 60000;
@@ -17,6 +17,7 @@ export class TimerStore {
       stopPause: action,
       startNewDay: action,
       minimizeWindow: action,
+      currentDate: computed,
     });
 
     this.startNewDay();
@@ -44,6 +45,10 @@ export class TimerStore {
     this.workedTimeInMinutes = Math.round(elapsedTime / oneMinute);
   };
 
+  public get currentDate() {
+    return dateToString(this.startTime);
+  }
+
   public get workedMinutes() {
     const workedMinutesString = (this.workedTimeInMinutes % oneHour).toString();
 
@@ -60,6 +65,10 @@ export class TimerStore {
     return workedHoursString.length > 1
       ? workedHoursString
       : `0${workedHoursString}`;
+  }
+
+  public get workedHoursDecimal() {
+    return roundNumber(this.workedTimeInMinutes / oneHour).toString();
   }
 
   public startPause = () => {
