@@ -81,4 +81,23 @@ export class CurrentReportStore {
   ) => {
     this.reportDescription = event.target.value;
   };
+
+  public onSave = async () => {
+    const reportDuration = parseFloat(this.reportDuration);
+    const reportDate = new Date(`${this.reportDate} 12:00`);
+
+    const recordResult = await ipcRenderer.invoke(
+      'excelFile:writeReport',
+      this.reportTask,
+      reportDuration,
+      this.reportDescription,
+      reportDate
+    );
+
+    if (!recordResult) {
+      runInAction(() => {
+        this.reportDescription = '';
+      });
+    }
+  };
 }

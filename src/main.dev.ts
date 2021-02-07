@@ -19,6 +19,7 @@ import { getAssetPath } from './utils';
 import { SettingsManager } from './managers/Settings';
 import { PersistentTimeManager } from './managers/PersistentTime';
 import { AppWindowManager } from './managers/AppWindow';
+import { ExcelFileManager } from './managers/ExcelFile';
 
 export default class AppUpdater {
   constructor() {
@@ -60,6 +61,7 @@ const initializeManagers = () => {
   PersistentTimeManager.has('init');
   SettingsManager.has('init');
   AppWindowManager.init();
+  ExcelFileManager.init();
 };
 
 const createWindow = async () => {

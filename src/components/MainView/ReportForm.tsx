@@ -27,6 +27,7 @@ export const ReportForm: React.FC = observer(() => {
     changeReportDate,
     reportDescription,
     changeReportDescription,
+    onSave,
   } = useStore(CurrentReportContext);
 
   const classes = useStyles();
@@ -66,7 +67,12 @@ export const ReportForm: React.FC = observer(() => {
         onChange={changeReportDescription}
         autoFocus
       />
-      <Button variant="outlined" color="primary">
+      <Button
+        variant="outlined"
+        color="primary"
+        disabled={!reportDescription}
+        onClick={onSave}
+      >
         Save <SaveIcon fontSize="large" />
       </Button>
     </>
